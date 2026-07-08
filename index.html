@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ocean Graph · Visualizador de conocimiento</title>
+<meta name="description" content="Visualizador de grafos de conocimiento con estética Ocean Industries — liquid glass, esmeralda-noche. Sube tu graph.json de Graphify y navégalo.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='7' fill='%23F2B84B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div id="bg"><div class="blob a"></div><div class="blob b"></div><div class="blob c"></div></div>
+
+<!-- ── Pantalla de entrada (empty state) ── -->
+<div id="landing">
+  <div class="land-card">
+    <div class="land-mark"><span></span></div>
+    <h1>Ocean Graph</h1>
+    <p class="land-sub">Visualizador de grafos de conocimiento · estética Ocean Industries</p>
+    <p class="land-desc">Convierte cualquier repo en un grafo navegable con <a href="https://github.com/Graphify-Labs/graphify" target="_blank" rel="noopener">Graphify</a>, luego suelta aquí el <code>graph.json</code> para verlo con la estética Ocean: liquid glass, esmeralda-noche, camino más corto entre conceptos.</p>
+
+    <div id="dropzone">
+      <div class="dz-inner">
+        <div class="dz-icon">↥</div>
+        <div class="dz-text">Arrastra tu <b>graph.json</b> aquí</div>
+        <div class="dz-or">o</div>
+        <label class="dz-btn" for="file-input">Elegir archivo</label>
+        <input type="file" id="file-input" accept=".json,application/json" hidden>
+      </div>
+    </div>
+
+    <div class="land-actions">
+      <button id="load-demo" class="land-demo">Ver grafo de ejemplo →</button>
+    </div>
+
+    <div class="land-how">
+      <span class="how-step"><b>1</b> <code>pip install graphifyy</code></span>
+      <span class="how-step"><b>2</b> <code>graphify . --no-viz</code></span>
+      <span class="how-step"><b>3</b> suelta <code>graphify-out/graph.json</code></span>
+    </div>
+    <div id="land-error"></div>
+  </div>
+  <div class="land-foot">Todo se procesa en tu navegador · nada se sube a ningún servidor</div>
+</div>
+
+<!-- ── Vista del grafo (oculta hasta cargar) ── -->
+<div id="app" hidden>
+  <svg id="graph"></svg>
+
+  <div id="topbar">
+    <span class="mark"></span>
+    <h1 id="graph-title">Grafo <span>· Ocean Graph</span></h1>
+    <span class="stat"><b id="st-nodes">0</b> nodos</span>
+    <span class="stat"><b id="st-links">0</b> enlaces</span>
+    <span class="stat"><b id="st-comms">0</b> comunidades</span>
+    <button id="btn-new" title="Cargar otro grafo">＋ Otro</button>
+  </div>
+
+  <div id="panel">
+    <div class="sec">
+      <h2>Buscar concepto</h2>
+      <input id="search" placeholder="función, archivo, idea…" autocomplete="off">
+      <div id="results"></div>
+    </div>
+    <div class="sec">
+      <h2>Detalle</h2>
+      <div id="detail"><div class="empty">Clic en un nodo para inspeccionarlo. Clic en dos nodos para trazar el camino más corto entre ellos.</div></div>
+    </div>
+    <div class="sec" id="legend-sec">
+      <h2>Comunidades</h2>
+      <div class="leg-controls">
+        <button class="leg-btn" id="leg-all">Todas</button>
+        <button class="leg-btn" id="leg-none">Ninguna</button>
+      </div>
+      <div id="legend"></div>
+    </div>
+  </div>
+
+  <div id="pathbar">
+    <span id="pathtext"></span>
+    <button id="pathclear">Limpiar</button>
+  </div>
+
+  <div id="hint"><kbd>arrastra</kbd> mover · <kbd>rueda</kbd> zoom · <kbd>clic</kbd> foco · <kbd>2 clics</kbd> camino</div>
+</div>
+
+<script src="/graph.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>
